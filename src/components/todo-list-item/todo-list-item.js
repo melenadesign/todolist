@@ -31,7 +31,7 @@ export default class TodolistItem extends Component {
 
     render() {
         const {label, onDeleted} = this.props;
-        const { done, important } = this.state;
+        const { done, important, todoData } = this.state;
 
         let classNames = 'todo-list-item';
         if (done) {
@@ -42,11 +42,7 @@ export default class TodolistItem extends Component {
             classNames += ' important';
         }
 
-        // const style = {
-        //     color: important ? 'steelblue' : 'black',
-        //     fontWeight: important ? 'bold' : 'normal'
-        //   };
-    
+
         return (
             <span className={ classNames }>
             <span
