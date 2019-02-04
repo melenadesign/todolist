@@ -16,6 +16,18 @@ export default class App extends Component {
            {label:'Have a lunch', important: false, id:3}
        ] 
        };
+    deleteItem = (id) => {
+        this.setState( ({ todoData }) => {
+            const idx = todoData.findIndex((el) => el.id ===id); 
+            console.log(idx);
+        
+            const newArray = [...todoData.slice(0, idx), ...todoData.slice(idx+1)];
+            return {
+                todoData: newArray
+            }
+
+        });   
+    };
 
     render() {
     
@@ -28,7 +40,7 @@ export default class App extends Component {
             </div>
     
             <Todolist  todos = {this.state.todoData}
-            onDeleted={ (id) => console.log('del', id)} />
+            onDeleted={ this.deleteItem } />
         </div>
         );
     };
