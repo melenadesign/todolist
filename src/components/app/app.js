@@ -13,16 +13,26 @@ export default class App extends Component {
 
     state = {
         todoData: [
-           {label:'Build React App', important: false, id:1},
-           {label:'Drink Coffee', important: true, id:2},
-           {label:'Have a lunch', important: false, id:3}
+            this.createTodoItem('Build React App'),
+            this.createTodoItem('Drink Coffee'),
+            this.createTodoItem('Have a lunch')
+
        ] 
        };
+
+
+    createTodoItem(label) {
+        return {
+            label,
+            important:false,
+            done:false,
+            id:this.maxId++
+        }
+    }
+
     deleteItem = (id) => {
         this.setState( ({ todoData }) => {
             const idx = todoData.findIndex((el) => el.id ===id); 
-            // console.log(idx);
-        
             const newArray = [...todoData.slice(0, idx), ...todoData.slice(idx+1)];
             return {
                 todoData: newArray
@@ -33,8 +43,9 @@ export default class App extends Component {
 
     addItem = (text) => {
         this.setState( ({ todoData }) => {
+            const newItem = this.createTodoItem(text);
         
-            const newArray = [...todoData, {label:text,  important: false, id:this.maxId++}];
+            const newArray = [...todoData, newItem];
             return {
                 todoData: newArray
             }
@@ -42,6 +53,40 @@ export default class App extends Component {
         });   
     };
 
+    onToggleImportant = (id) => {
+        this.setState( ({ todoData }) => {
+            const idx = todoData.findIndex((el) => el.id ===id); 
+            const oldItem = todoData[idx];
+            const newItem = {...oldItem,
+                important: !oldItem.important}
+            const newImpArr = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx+1)];
+
+            return {
+                todoData: newImpArr
+            }
+
+        });
+
+            console.log('Toggle important ', id);
+
+    };
+
+    onToggleDone = (id) => {
+        this.setState( ({ todoData }) => {
+            const idx = todoData.findIndex((el) => el.id ===id); 
+            const oldItem = todoData[idx];
+            const newItem = {...oldItem,
+                done: !oldItem.done}
+            const newImpArr = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx+1)];
+
+            return {
+                todoData: newImpArr
+            }
+
+        });
+        console.log('Toggle done ', id);
+
+    };
 
     render() {
     
@@ -54,7 +99,10 @@ export default class App extends Component {
             </div>
     
             <Todolist  todos = {this.state.todoData}
-            onDeleted={ this.deleteItem } />
+            onDeleted={ this.deleteItem } 
+            onToggleImportant={this.onToggleImportant}
+            onToggleDone={this.onToggleDone}
+            />
 
              <ItemAddForm 
              onItemAdded={ this.addItem } />  
