@@ -5,14 +5,6 @@ import './todo-list-item.css';
 
 export default class TodolistItem extends Component {
 
-    state = {
-        done: false
-    };
-
-
-  
-
-
     render() {
         const {label, onDeleted, 
             onToggleImportant, 
